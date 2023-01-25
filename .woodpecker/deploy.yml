@@ -32,7 +32,7 @@ pipeline:
   deploy_staging_service:
     image: gauravgaglani/drone-k8s:latest
     settings:
-      image: ghcr.io/ringsq/woodpecker_test_service
+      image: ghcr.io/ringsq/woodpecker-test
       <<: *common-staging-settings
       folderpath: deploy/overlays/staging/app
       debug: true
@@ -43,7 +43,7 @@ pipeline:
   deploy_production_service:
     image: gauravgaglani/drone-k8s:latest
     settings:
-      image: ghcr.io/ringsq/woodpecker_test_service
+      image: ghcr.io/ringsq/woodpecker-test
       <<: *common-production-settings
       folderpath: deploy/overlays/production/app
       debug: true

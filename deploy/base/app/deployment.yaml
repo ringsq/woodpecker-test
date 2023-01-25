@@ -32,7 +32,7 @@ spec:
         - name: woodpecker-test-docker-pkg-github-com-registry-secret
       containers:
         - name: woodpecker-test-service
-          image: "ghcr.io/ringsq/woodpecker_test_service:latest"
+          image: "ghcr.io/ringsq/woodpecker-test:latest"
           imagePullPolicy: Always
           env:
             - name: SENTRY_DSN
