@@ -22,9 +22,9 @@ variables:
 
 pipeline:
   deploy_staging_service:
-    image: ghcr.io/ringsq/drone-k8s:latest
+    image: gauravgaglani/drone-k8s:latest
     settings:
-      image: ghcr.io/ringsq/nexoss_service
+      image: ghcr.io/ringsq/woodpecker_test_service
       <<: *common-staging-settings
       folderpath: deploy/overlays/staging/app
       debug: true
@@ -33,9 +33,9 @@ pipeline:
       event: pull_request
 
   deploy_production_service:
-    image: ghcr.io/ringsq/drone-k8s:latest
+    image: gauravgaglani/drone-k8s:latest
     settings:
-      image: ghcr.io/ringsq/nexoss_service
+      image: ghcr.io/ringsq/woodpecker_test_service
       <<: *common-production-settings
       folderpath: deploy/overlays/production/app
       debug: true

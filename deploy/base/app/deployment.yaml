@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    owner: ringsquared
+    type: api
+    app: inteliquent-service
+    prometheus-enabled: 'true'
+  name: inteliquent-service
+spec:
+  selector:
+    matchLabels:
+      owner: ringsquared
+      type: api
+      app: inteliquent-service
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  revisionHistoryLimit: 5
+  template:
+    metadata:
+      labels:
+        owner: ringsquared
+        type: api
+        app: inteliquent-service
+        prometheus-enabled: 'true'
+    spec:
+      imagePullSecrets:
+        - name: woodpecker-test-docker-pkg-github-com-registry-secret
+      containers:
+        - name: inteliquent-service
+          image: "ghcr.io/ringsq/inteliquent_service:latest"
+          imagePullPolicy: Always
+          env:
+            - name: SENTRY_DSN
+              valueFrom:
+                configMapKeyRef:
+                  name: woodpecker-app-config
+                  key: sentry_dsn
+            - name: SENTRY_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: woodpecker-app-config
+                  key: sentry_environment
+            - name: IQNT_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: woodpecker-secrets
+                  key:  inteliquent_api_key
+            - name: IQNT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: woodpecker-secrets
+                  key:  inteliquent_secret_key
+            - name: IQNT_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: woodpecker-app-config
+                  key: inteliquent_base_path
+            - name: NATSURL
+              valueFrom:
+                configMapKeyRef:
+                  name: woodpecker-app-config
+                  key: nats_url
+            - name: HTTP_REQUEST_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: woodpecker-app-config
+                  key: http_request_timeout
+            - name: PROMETHEUS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: woodpecker-app-config
+                  key: prometheus_port
+            - name: RUN_INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  name: woodpecker-app-config
+                  key: run_interval      
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP        
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+      terminationGracePeriodSeconds: 60

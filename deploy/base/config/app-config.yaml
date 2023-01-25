@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: woodpecker-app-config
+data:
+  sentry_dsn: 'https://8f486159a43146ada535d3e0f619ea04@o347551.ingest.sentry.io/5399266'
+  sentry_environment: production
+  inteliquent_base_path: 'https://services.inteliquent.com/Services/1.0.0/'
+  http_request_timeout: "3"
+  prometheus_port: "8080"
+  nats_url: 'tls://nats.ringsq.io:4222'
+  run_interval: "12"
