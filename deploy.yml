@@ -1,0 +1,44 @@
+depends_on:
+  - build
+  
+variables:
+  - auth-settings: &auth-settings
+      azure_appid:
+        from_secret: azure_appid
+      azure_password:
+        from_secret: azure_password
+      azure_tenant:
+        from_secret: azure_tenant
+
+  - common-staging-settings: &common-staging-settings
+      cluster: 'm5AutomationStaging'
+      cluster_rg: 'm5Automation'
+      <<: *auth-settings
+
+  - common-production-settings: &common-production-settings
+      cluster: 'm5AutomationV2'
+      cluster_rg: 'm5Automation'
+      <<: *auth-settings    
+
+pipeline:
+  deploy_staging_service:
+    image: ghcr.io/ringsq/drone-k8s:latest
+    settings:
+      image: ghcr.io/ringsq/nexoss_service
+      <<: *common-staging-settings
+      folderpath: deploy/overlays/staging/app
+      debug: true
+      dryrun: false
+    when:
+      event: pull_request
+
+  deploy_production_service:
+    image: ghcr.io/ringsq/drone-k8s:latest
+    settings:
+      image: ghcr.io/ringsq/nexoss_service
+      <<: *common-production-settings
+      folderpath: deploy/overlays/production/app
+      debug: true
+      dryrun: false
+    when:
+      event: tag
