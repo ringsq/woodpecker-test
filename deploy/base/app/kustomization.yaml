@@ -1,0 +1,10 @@
+
+resources:
+  ## Config
+  - ../config
+
+  ## Secrets
+  - ../secrets
+
+  ## Deployment Manifest
+  - ./deployment.yaml

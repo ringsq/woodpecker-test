@@ -21,10 +21,19 @@ variables:
       <<: *auth-settings    
 
 pipeline:
+  git:
+    image: woodpeckerci/plugin-git
+    when:
+      event: 
+        - pull_request
+        - deployment
+        - tag
+
   deploy_staging_service:
-    image: ghcr.io/ringsq/drone-k8s:latest
+    image: gauravgaglani/drone-k8s:latest
+    pull: true
     settings:
-      image: ghcr.io/ringsq/nexoss_service
+      image: ghcr.io/ringsq/woodpecker-test
       <<: *common-staging-settings
       folderpath: deploy/overlays/staging/app
       debug: true
@@ -33,9 +42,10 @@ pipeline:
       event: pull_request
 
   deploy_production_service:
-    image: ghcr.io/ringsq/drone-k8s:latest
+    image: gauravgaglani/drone-k8s:latest
+    pull: true
     settings:
-      image: ghcr.io/ringsq/nexoss_service
+      image: ghcr.io/ringsq/woodpecker-test
       <<: *common-production-settings
       folderpath: deploy/overlays/production/app
       debug: true
