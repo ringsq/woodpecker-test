@@ -4,15 +4,15 @@ metadata:
   labels:
     owner: ringsquared
     type: api
-    app: inteliquent-service
+    app: woodpecker-test-service
     prometheus-enabled: 'true'
-  name: inteliquent-service
+  name: woodpecker-test-service
 spec:
   selector:
     matchLabels:
       owner: ringsquared
       type: api
-      app: inteliquent-service
+      app: woodpecker-test-service
   replicas: 1
   strategy:
     rollingUpdate:
@@ -25,14 +25,14 @@ spec:
       labels:
         owner: ringsquared
         type: api
-        app: inteliquent-service
+        app: woodpecker-test-service
         prometheus-enabled: 'true'
     spec:
       imagePullSecrets:
         - name: woodpecker-test-docker-pkg-github-com-registry-secret
       containers:
-        - name: inteliquent-service
-          image: "ghcr.io/ringsq/inteliquent_service:latest"
+        - name: woodpecker-test-service
+          image: "ghcr.io/ringsq/woodpecker_test_service:latest"
           imagePullPolicy: Always
           env:
             - name: SENTRY_DSN
