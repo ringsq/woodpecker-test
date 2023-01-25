@@ -21,6 +21,14 @@ variables:
       <<: *auth-settings    
 
 pipeline:
+  git:
+    image: woodpeckerci/plugin-git
+    when:
+      event: 
+        - pull_request
+        - deployment
+        - tag
+
   deploy_staging_service:
     image: gauravgaglani/drone-k8s:latest
     settings:
