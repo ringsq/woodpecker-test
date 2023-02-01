@@ -19,8 +19,7 @@ variables:
       cluster: 'm5AutomationV2'
       cluster_rg: 'm5Automation'
       <<: *auth-settings    
-
-pipeline:
+clone:
   git:
     image: woodpeckerci/plugin-git
     when:
@@ -28,7 +27,7 @@ pipeline:
         - pull_request
         - deployment
         - tag
-
+pipeline:
   deploy_staging_service:
     image: gauravgaglani/drone-k8s:latest
     pull: true
